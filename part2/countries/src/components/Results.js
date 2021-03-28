@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Country from "../components/Country";
 
-const Results = ({ filterQuery }) => {
+const Results = ({ filterQuery, onShowClick }) => {
   const [countries, setCountries] = useState([]);
 
   const filteredCountries = countries.filter((country) => {
@@ -27,7 +27,14 @@ const Results = ({ filterQuery }) => {
     return (
       <ul>
         {filteredCountries.map((country) => {
-          return <li key={country.alpha3Code}>{country.name}</li>;
+          return (
+            <li key={country.alpha3Code} data-country={country.name}>
+              {country.name}{" "}
+              <button type="button" onClick={onShowClick}>
+                show
+              </button>
+            </li>
+          );
         })}
       </ul>
     );

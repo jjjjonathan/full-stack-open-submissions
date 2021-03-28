@@ -9,6 +9,11 @@ function App() {
     setFilterQuery(event.target.value);
   };
 
+  const handleShowClick = (event) => {
+    const newCountry = event.target.parentNode.dataset.country;
+    setFilterQuery(newCountry);
+  };
+
   return (
     <main>
       <h1>Country search</h1>
@@ -16,7 +21,7 @@ function App() {
         filterQuery={filterQuery}
         onFilterQueryChange={handleFilterQueryChange}
       />
-      <Results filterQuery={filterQuery} />
+      <Results filterQuery={filterQuery} onShowClick={handleShowClick} />
     </main>
   );
 }
