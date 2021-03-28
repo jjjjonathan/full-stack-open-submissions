@@ -28,7 +28,16 @@ const App = () => {
     if (persons.map((person) => person.name).includes(newName)) {
       alert(`${newName} is already added to the phonebook`);
     } else {
-      setPersons([...persons, { name: newName, number: newNumber }]);
+      const newEntry = {
+        name: newName,
+        number: newNumber,
+        id: persons.length + 1,
+      };
+      axios.post("http://localhost:3001/persons", newEntry).then((response) => {
+        console.log(response);
+        setPersons([...persons, newEntry]);
+      });
+
       setNewName("");
       setNewNumber("");
     }
