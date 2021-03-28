@@ -22,6 +22,8 @@ const App = () => {
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
 
+  const total = good + neutral + bad;
+
   const handleGoodClick = () => {
     setGood(good + 1);
   };
@@ -44,6 +46,9 @@ const App = () => {
       <Status type="good" count={good} />
       <Status type="neutral" count={neutral} />
       <Status type="bad" count={bad} />
+      <Status type="all" count={total} />
+      <Status type="average" count={(good - bad) / total} />
+      <Status type="positive" count={(good / total) * 100 + "%"} />
     </main>
   );
 };
