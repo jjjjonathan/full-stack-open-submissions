@@ -16,6 +16,20 @@ const Status = ({ type, count }) => {
   );
 };
 
+const Statistics = ({ good, neutral, bad, total }) => {
+  return (
+    <div>
+      <h2>statistics</h2>
+      <Status type="good" count={good} />
+      <Status type="neutral" count={neutral} />
+      <Status type="bad" count={bad} />
+      <Status type="all" count={total} />
+      <Status type="average" count={(good - bad) / total} />
+      <Status type="positive" count={(good / total) * 100 + "%"} />
+    </div>
+  );
+};
+
 const App = () => {
   // save clicks of each button to its own state
   const [good, setGood] = useState(0);
@@ -42,13 +56,7 @@ const App = () => {
       <Button type="good" onClick={handleGoodClick} />
       <Button type="neutral" onClick={handleNeutralClick} />
       <Button type="bad" onClick={handleBadClick} />
-      <h2>statistics</h2>
-      <Status type="good" count={good} />
-      <Status type="neutral" count={neutral} />
-      <Status type="bad" count={bad} />
-      <Status type="all" count={total} />
-      <Status type="average" count={(good - bad) / total} />
-      <Status type="positive" count={(good / total) * 100 + "%"} />
+      <Statistics good={good} neutral={neutral} bad={bad} total={total} />
     </main>
   );
 };
