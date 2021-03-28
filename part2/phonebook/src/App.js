@@ -1,22 +1,7 @@
 import React, { useState } from "react";
-
-const Numbers = ({ persons, query }) => {
-  const filteredPersons = query
-    ? persons.filter((person) => {
-        return person.name.toLowerCase().includes(query.toLowerCase());
-      })
-    : persons;
-
-  return (
-    <ul>
-      {filteredPersons.map((person) => (
-        <li key={person.name}>
-          {person.name} {person.number}
-        </li>
-      ))}
-    </ul>
-  );
-};
+import Numbers from "./components/Numbers";
+import Filter from "./components/Filter";
+import Add from "./components/Add";
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -48,25 +33,23 @@ const App = () => {
     } else {
       setPersons([...persons, { name: newName, number: newNumber }]);
       setNewName("");
+      setNewNumber("");
     }
   };
 
   return (
     <div>
       <h1>Phonebook</h1>
-      filter: <input value={query} onChange={handleQueryInput} />
+      <Filter query={query} onChange={handleQueryInput} />
       <h2>add new</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          name: <input value={newName} onChange={handleNameInput} />
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleNumberInput} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <Add
+        onFormSubmit={handleSubmit}
+        newName={newName}
+        newNumber={newNumber}
+        onNameChange={handleNameInput}
+        onNumberChange={handleNumberInput}
+      />
+
       <h2>Numbers</h2>
       <Numbers persons={persons} query={query} />
     </div>
