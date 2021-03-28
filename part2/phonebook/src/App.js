@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import personsService from "./services/persons";
 import Numbers from "./components/Numbers";
 import Filter from "./components/Filter";
 import Add from "./components/Add";
@@ -33,8 +33,8 @@ const App = () => {
         number: newNumber,
         id: persons.length + 1,
       };
-      axios.post("http://localhost:3001/persons", newEntry).then((response) => {
-        console.log(response);
+      personsService.create(newEntry).then((response) => {
+        console.log(response.data);
         setPersons([...persons, newEntry]);
       });
 
@@ -44,7 +44,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    axios.get("http://localhost:3001/persons").then((response) => {
+    personsService.getAll().then((response) => {
       setPersons(response.data);
     });
   }, []);
