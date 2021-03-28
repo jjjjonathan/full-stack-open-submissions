@@ -1,1 +1,3 @@
-# full-stack-open-submissions
+# Full stack open submissions
+
+My submissions to the Full stack open course. https://fullstackopen.com/en/
