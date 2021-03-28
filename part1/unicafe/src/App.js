@@ -10,9 +10,10 @@ const Button = ({ type, onClick }) => {
 
 const Statistic = ({ type, count }) => {
   return (
-    <p>
-      {type}: {count}
-    </p>
+    <tr>
+      <td>{type}</td>
+      <td>{count}</td>
+    </tr>
   );
 };
 
@@ -28,12 +29,16 @@ const Statistics = ({ good, neutral, bad, total }) => {
   return (
     <div>
       <h2>Statistics</h2>
-      <Statistic type="good" count={good} />
-      <Statistic type="neutral" count={neutral} />
-      <Statistic type="bad" count={bad} />
-      <Statistic type="all" count={total} />
-      <Statistic type="average" count={(good - bad) / total} />
-      <Statistic type="positive" count={(good / total) * 100 + "%"} />
+      <table>
+        <tbody>
+          <Statistic type="good" count={good} />
+          <Statistic type="neutral" count={neutral} />
+          <Statistic type="bad" count={bad} />
+          <Statistic type="all" count={total} />
+          <Statistic type="average" count={(good - bad) / total} />
+          <Statistic type="positive" count={(good / total) * 100 + "%"} />
+        </tbody>
+      </table>
     </div>
   );
 };
