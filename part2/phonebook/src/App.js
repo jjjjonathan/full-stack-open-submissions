@@ -10,8 +10,13 @@ const App = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setPersons([...persons, { name: newName }]);
-    setNewName("");
+
+    if (persons.map((person) => person.name).includes(newName)) {
+      alert(`${newName} is already added to the phonebook`);
+    } else {
+      setPersons([...persons, { name: newName }]);
+      setNewName("");
+    }
   };
 
   return (
