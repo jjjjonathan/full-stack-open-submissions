@@ -11,15 +11,23 @@ const Button = ({ type, onClick }) => {
 const Status = ({ type, count }) => {
   return (
     <p>
-      {type} {count}
+      {type}: {count}
     </p>
   );
 };
 
 const Statistics = ({ good, neutral, bad, total }) => {
+  if (total === 0) {
+    return (
+      <div>
+        <h2>Statistics</h2>
+        <p>No feedback yet - be the first!</p>
+      </div>
+    );
+  }
   return (
     <div>
-      <h2>statistics</h2>
+      <h2>Statistics</h2>
       <Status type="good" count={good} />
       <Status type="neutral" count={neutral} />
       <Status type="bad" count={bad} />
