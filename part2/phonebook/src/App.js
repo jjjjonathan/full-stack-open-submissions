@@ -1,14 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import Numbers from "./components/Numbers";
 import Filter from "./components/Filter";
 import Add from "./components/Add";
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: "Arto Hellas", number: "555-554-3498" },
-    { name: "Jonny the Dog", number: "bark bark" },
-    { name: "teddy reooszlevy", number: "19482-23-123" },
-  ]);
+  const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [query, setQuery] = useState("");
@@ -36,6 +33,12 @@ const App = () => {
       setNewNumber("");
     }
   };
+
+  useEffect(() => {
+    axios.get("http://localhost:3001/persons").then((response) => {
+      setPersons(response.data);
+    });
+  }, []);
 
   return (
     <div>
