@@ -11,9 +11,19 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [query, setQuery] = useState("");
   const [message, setMessage] = useState("");
+  const [msgIsError, setMsgIsError] = useState(false);
 
   const successMessage = (text) => {
     setMessage(text);
+    setMsgIsError(false);
+    setTimeout(() => {
+      setMessage("");
+    }, 3000);
+  };
+
+  const errorMessage = (text) => {
+    setMessage(text);
+    setMsgIsError(true);
     setTimeout(() => {
       setMessage("");
     }, 3000);
@@ -43,9 +53,16 @@ const App = () => {
         const oldEntry = persons.find((person) => person.name === newName);
         const updatedEntry = { ...oldEntry, number: newNumber };
 
-        personsService.put(updatedEntry).then(() => {
-          successMessage(`Successfully updated number for ${newName}!`);
-        });
+        personsService
+          .put(updatedEntry)
+          .then(() => {
+            successMessage(`Successfully updated number for ${newName}!`);
+          })
+          .catch(() => {
+            errorMessage(
+              `${newName} has already been removed from the phonebook. Please refresh the page`
+            );
+          });
 
         setPersons(
           persons.map((person) => {
@@ -97,7 +114,7 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
-      <Notification message={message} isError={false} />
+      <Notification message={message} isError={msgIsError} />
       <Filter query={query} onChange={handleQueryInput} />
       <h2>add new</h2>
       <Add
