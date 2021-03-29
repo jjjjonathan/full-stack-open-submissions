@@ -1,39 +1,24 @@
 {
   "persons": [
     {
-      "name": "Arto Hellas",
-      "number": "040-123456",
-      "id": 1
+      "name": "Jonny the Dog",
+      "number": "507-413-23barkbark",
+      "id": 8974487574
     },
     {
-      "name": "Ada Lovelace",
-      "number": "39-44-5323523",
-      "id": 2
+      "name": "heelllis",
+      "number": "20938102983",
+      "id": 8779026379
     },
     {
-      "name": "Dan Abramov",
-      "number": "12-43-234345",
-      "id": 3
+      "name": "jimmmmeeeee",
+      "number": "23490pi12",
+      "id": 4372805147
     },
     {
-      "name": "Mary Poppendieck",
-      "number": "39-23-6423122",
-      "id": 4
-    },
-    {
-      "name": "Jonny",
-      "number": "23.43",
-      "id": 5
-    },
-    {
-      "name": "people",
-      "number": "234.983.1293",
-      "id": 6
-    },
-    {
-      "name": "Person",
-      "number": "numba",
-      "id": 7
+      "name": "hold",
+      "number": "02934",
+      "id": 7774864386
     }
   ]
 }

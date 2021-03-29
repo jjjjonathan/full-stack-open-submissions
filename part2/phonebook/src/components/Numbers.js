@@ -10,9 +10,11 @@ const Numbers = ({ persons, query, onDeleteClick }) => {
   return (
     <ul>
       {filteredPersons.map((person) => (
-        <li key={person.name}>
+        <li key={person.id}>
           {person.name} {person.number}{" "}
-          <button type="button" onClick={onDeleteClick} />
+          <button type="button" onClick={() => onDeleteClick(person.id)}>
+            Delete
+          </button>
         </li>
       ))}
     </ul>

@@ -31,7 +31,7 @@ const App = () => {
       const newEntry = {
         name: newName,
         number: newNumber,
-        id: persons.length + 1,
+        id: Math.round(Math.random() * 10000000000),
       };
       personsService.create(newEntry).then((response) => {
         console.log(response.data);
@@ -40,6 +40,17 @@ const App = () => {
 
       setNewName("");
       setNewNumber("");
+    }
+  };
+
+  const handleDelete = (id) => {
+    if (
+      window.confirm(
+        `Delete ${persons.find((person) => person.id === id).name}?`
+      )
+    ) {
+      personsService.deleteEntry(id);
+      setPersons(persons.filter((person) => person.id !== id));
     }
   };
 
@@ -63,7 +74,7 @@ const App = () => {
       />
 
       <h2>Numbers</h2>
-      <Numbers persons={persons} query={query} />
+      <Numbers persons={persons} query={query} onDeleteClick={handleDelete} />
     </div>
   );
 };

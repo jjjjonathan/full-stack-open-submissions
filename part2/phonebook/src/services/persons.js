@@ -9,4 +9,9 @@ const create = (newObject) => {
   return axios.post(url, newObject);
 };
 
-export default { getAll, create };
+const deleteEntry = (id) => {
+  return axios.delete(`${url}/${id}`);
+};
+
+// eslint-disable-next-line
+export default { getAll, create, deleteEntry };
