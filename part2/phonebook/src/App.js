@@ -26,7 +26,25 @@ const App = () => {
     event.preventDefault();
 
     if (persons.map((person) => person.name).includes(newName)) {
-      alert(`${newName} is already added to the phonebook`);
+      if (
+        window.confirm(
+          `${newName} is already added to the phonebook, would you like to replace old number with new one?`
+        )
+      ) {
+        const oldEntry = persons.find((person) => person.name === newName);
+        const updatedEntry = { ...oldEntry, number: newNumber };
+
+        personsService.put(updatedEntry);
+
+        setPersons(
+          persons.map((person) => {
+            return person.id === updatedEntry.id ? updatedEntry : person;
+          })
+        );
+
+        setNewName("");
+        setNewNumber("");
+      }
     } else {
       const newEntry = {
         name: newName,
@@ -34,7 +52,6 @@ const App = () => {
         id: Math.round(Math.random() * 10000000000),
       };
       personsService.create(newEntry).then((response) => {
-        console.log(response.data);
         setPersons([...persons, newEntry]);
       });
 
