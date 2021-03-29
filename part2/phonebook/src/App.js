@@ -3,12 +3,21 @@ import personsService from "./services/persons";
 import Numbers from "./components/Numbers";
 import Filter from "./components/Filter";
 import Add from "./components/Add";
+import Notification from "./components/Notification";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [query, setQuery] = useState("");
+  const [message, setMessage] = useState("");
+
+  const successMessage = (text) => {
+    setMessage(text);
+    setTimeout(() => {
+      setMessage("");
+    }, 3000);
+  };
 
   const handleNameInput = (event) => {
     setNewName(event.target.value);
@@ -34,7 +43,9 @@ const App = () => {
         const oldEntry = persons.find((person) => person.name === newName);
         const updatedEntry = { ...oldEntry, number: newNumber };
 
-        personsService.put(updatedEntry);
+        personsService.put(updatedEntry).then(() => {
+          successMessage(`Successfully updated number for ${newName}!`);
+        });
 
         setPersons(
           persons.map((person) => {
@@ -53,6 +64,7 @@ const App = () => {
       };
       personsService.create(newEntry).then((response) => {
         setPersons([...persons, newEntry]);
+        successMessage(`Successfully added ${newName} to phonebook!`);
       });
 
       setNewName("");
@@ -68,6 +80,11 @@ const App = () => {
     ) {
       personsService.deleteEntry(id);
       setPersons(persons.filter((person) => person.id !== id));
+      successMessage(
+        `Successfully deleted ${
+          persons.find((person) => person.id === id).name
+        } from phonebook`
+      );
     }
   };
 
@@ -80,6 +97,7 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
+      <Notification message={message} isError={false} />
       <Filter query={query} onChange={handleQueryInput} />
       <h2>add new</h2>
       <Add
