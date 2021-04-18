@@ -32,11 +32,7 @@ export const voteFor = (id) => {
 export const createNew = (content) => {
   return {
     type: 'CREATE',
-    data: {
-      content,
-      id: getId(),
-      votes: 0,
-    },
+    data: content,
   };
 };
 
