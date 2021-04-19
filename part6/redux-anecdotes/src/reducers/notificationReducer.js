@@ -9,14 +9,18 @@ const reducer = (state = '', action) => {
   }
 };
 
+let timeout;
+
 export const setNotification = (message, seconds) => {
   return async (dispatch) => {
+    clearTimeout(timeout);
+
     dispatch({
       type: 'MESSAGE',
       data: message,
     });
 
-    setTimeout(() => {
+    timeout = setTimeout(() => {
       dispatch({
         type: 'CLEAR_MESSAGE',
       });
