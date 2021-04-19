@@ -9,16 +9,18 @@ const reducer = (state = '', action) => {
   }
 };
 
-export const setMessage = (message) => {
-  return {
-    type: 'MESSAGE',
-    data: message,
-  };
-};
+export const setNotification = (message, seconds) => {
+  return async (dispatch) => {
+    dispatch({
+      type: 'MESSAGE',
+      data: message,
+    });
 
-export const clearMessage = () => {
-  return {
-    type: 'CLEAR_MESSAGE',
+    setTimeout(() => {
+      dispatch({
+        type: 'CLEAR_MESSAGE',
+      });
+    }, seconds * 1000);
   };
 };
 
