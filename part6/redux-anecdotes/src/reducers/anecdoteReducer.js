@@ -30,9 +30,12 @@ export const voteFor = (id) => {
 };
 
 export const createNew = (content) => {
-  return {
-    type: 'CREATE',
-    data: content,
+  return async (dispatch) => {
+    const newAnecdote = await anecdoteService.createNew(content);
+    dispatch({
+      type: 'CREATE',
+      data: newAnecdote,
+    });
   };
 };
 
