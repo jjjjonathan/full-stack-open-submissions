@@ -13,6 +13,12 @@ const createNew = async (content) => {
   return response.data;
 };
 
-const anecdoteService = { getAll, createNew };
+const update = async (anecdote) => {
+  const putUrl = `${url}/${anecdote.id}`;
+  const response = await axios.put(putUrl, anecdote);
+  return response.data;
+};
+
+const anecdoteService = { getAll, createNew, update };
 
 export default anecdoteService;
