@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
-import { Switch, Route, Link, useRouteMatch } from 'react-router-dom';
+import {
+  Switch,
+  Route,
+  Link,
+  useRouteMatch,
+  useHistory,
+} from 'react-router-dom';
 import Anecdote from './components/Anecdote';
+import AnecdoteList from './components/AnecdoteList';
+import CreateNew from './components/CreateNew';
 
 const Menu = () => {
   const padding = {
@@ -20,19 +28,6 @@ const Menu = () => {
     </div>
   );
 };
-
-const AnecdoteList = ({ anecdotes }) => (
-  <div>
-    <h2>Anecdotes</h2>
-    <ul>
-      {anecdotes.map((anecdote) => (
-        <li key={anecdote.id}>
-          <Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link>
-        </li>
-      ))}
-    </ul>
-  </div>
-);
 
 const About = () => (
   <div>
@@ -70,55 +65,6 @@ const Footer = () => (
   </div>
 );
 
-const CreateNew = (props) => {
-  const [content, setContent] = useState('');
-  const [author, setAuthor] = useState('');
-  const [info, setInfo] = useState('');
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    props.addNew({
-      content,
-      author,
-      info,
-      votes: 0,
-    });
-  };
-
-  return (
-    <div>
-      <h2>create a new anecdote</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          content
-          <input
-            name="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
-        </div>
-        <div>
-          author
-          <input
-            name="author"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-          />
-        </div>
-        <div>
-          url for more info
-          <input
-            name="info"
-            value={info}
-            onChange={(e) => setInfo(e.target.value)}
-          />
-        </div>
-        <button>create</button>
-      </form>
-    </div>
-  );
-};
-
 const App = () => {
   const [anecdotes, setAnecdotes] = useState([
     {
@@ -139,9 +85,20 @@ const App = () => {
 
   const [notification, setNotification] = useState('');
 
+  const notify = (message) => {
+    setNotification(message);
+    setTimeout(() => {
+      setNotification('');
+    }, 10000);
+  };
+
+  const history = useHistory();
+
   const addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0);
-    setAnecdotes(anecdotes.concat(anecdote));
+    setAnecdotes([...anecdotes, anecdote]);
+    history.push('/');
+    notify(`Created new anecdote by ${anecdote.author}!`);
   };
 
   const anecdoteById = (id) => anecdotes.find((a) => a.id === id);
@@ -166,6 +123,7 @@ const App = () => {
     <div>
       <h1>Software anecdotes</h1>
       <Menu />
+      <div>{notification}</div>
       <Switch>
         <Route path="/about">
           <About />
