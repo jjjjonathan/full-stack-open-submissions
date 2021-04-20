@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import blogService from '../services/blogs';
+import { useDispatch } from 'react-redux';
+import { updateBlog } from '../reducers/blogReducer';
 
 const Blog = ({ blog, onDelete, user }) => {
   const [visible, setVisible] = useState(false);
-  const [likes, setLikes] = useState(blog.likes);
+
+  const dispatch = useDispatch();
 
   const hideWhenVisible = { display: visible ? 'none' : '' };
   const showWhenVisible = { display: visible ? '' : 'none' };
@@ -14,15 +16,15 @@ const Blog = ({ blog, onDelete, user }) => {
 
   const handleLikeButton = async () => {
     try {
-      await blogService.update(blog.id, {
-        author: blog.author,
-        title: blog.title,
-        url: blog.url,
-        likes: likes + 1,
-        user: blog.user.id,
-      });
-
-      setLikes(likes + 1);
+      dispatch(
+        updateBlog(blog.id, {
+          author: blog.author,
+          title: blog.title,
+          url: blog.url,
+          likes: blog.likes + 1,
+          user: blog.user.id,
+        })
+      );
     } catch (error) {
       console.error(error);
     }
@@ -49,7 +51,7 @@ const Blog = ({ blog, onDelete, user }) => {
         <ul>
           <li>{blog.url}</li>
           <li>
-            Likes: {likes}
+            Likes: {blog.likes}
             <button
               onClick={handleLikeButton}
               key={blog.id}

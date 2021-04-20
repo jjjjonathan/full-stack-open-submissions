@@ -1,4 +1,4 @@
-/* eslint-disable */
+///* eslint-disable */
 
 import React, { useState, useEffect, useRef } from 'react';
 import Notification from './components/Notification';
@@ -12,7 +12,11 @@ import {
   timedMessage,
   timedErrorMessage,
 } from './reducers/notificationReducer';
-import { initializeBlogs, createBlog } from './reducers/blogReducer';
+import {
+  initializeBlogs,
+  createBlog,
+  deleteBlog,
+} from './reducers/blogReducer';
 import { useDispatch, useSelector } from 'react-redux';
 
 const App = () => {
@@ -110,8 +114,7 @@ const App = () => {
   const handleDelete = async (blog) => {
     if (window.confirm(`Delete ${blog.title}?`)) {
       try {
-        await blogService.deleteOne(blog.id);
-        setBlogs(blogs.filter((controlBlog) => controlBlog.id !== blog.id));
+        dispatch(deleteBlog(blog.id));
         dispatch(timedMessage(`Successfully deleted ${blog.title}`, 3));
       } catch (error) {
         console.log({ error });
