@@ -24,7 +24,7 @@ const reducer = (state = '', action) => {
 let timeout;
 
 export const timedErrorMessage = (message, seconds) => {
-  return async (dispatch) => {
+  return (dispatch) => {
     clearTimeout(timeout);
 
     dispatch({
@@ -41,7 +41,7 @@ export const timedErrorMessage = (message, seconds) => {
 };
 
 export const timedMessage = (message, seconds) => {
-  return async (dispatch) => {
+  return (dispatch) => {
     clearTimeout(timeout);
 
     dispatch({
