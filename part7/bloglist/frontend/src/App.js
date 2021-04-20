@@ -1,13 +1,19 @@
 ///* eslint-disable */
 
 import React, { useState, useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Route, Switch } from 'react-router-dom';
+
 import Notification from './components/Notification';
 import Blog from './components/Blog';
 import Login from './components/Login';
 import Create from './components/Create';
 import Togglable from './components/Togglable';
+import Users from './components/Users';
+
 import blogService from './services/blogs';
 import loginService from './services/login';
+
 import {
   timedMessage,
   timedErrorMessage,
@@ -18,7 +24,6 @@ import {
   deleteBlog,
 } from './reducers/blogReducer';
 import { setUser } from './reducers/userReducer';
-import { useDispatch, useSelector } from 'react-redux';
 
 const App = () => {
   const blogs = useSelector((state) => state.blogs);
@@ -185,7 +190,12 @@ const App = () => {
         <div>
           <p>Logged in as {user.name}</p>
           <button onClick={handleLogout}>Logout</button>
-          {mainPage()}
+          <Switch>
+            <Route path="/users">
+              <Users />
+            </Route>
+            <Route path="/">{mainPage()}</Route>
+          </Switch>
         </div>
       )}
     </div>
