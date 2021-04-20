@@ -22,7 +22,6 @@ const reducer = (state = [], action) => {
 export const createBlog = (blog) => {
   return async (dispatch) => {
     const response = await blogService.create(blog);
-    console.log(response);
     dispatch({
       type: 'CREATE_BLOG',
       data: response,

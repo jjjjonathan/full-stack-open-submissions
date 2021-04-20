@@ -1,5 +1,3 @@
-///* eslint-disable */
-
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
@@ -11,6 +9,7 @@ import Create from './components/Create';
 import Togglable from './components/Togglable';
 import Users from './components/Users';
 import User from './components/User';
+import BlogPage from './components/BlogPage';
 
 import blogService from './services/blogs';
 import loginService from './services/login';
@@ -19,11 +18,7 @@ import {
   timedMessage,
   timedErrorMessage,
 } from './reducers/notificationReducer';
-import {
-  initializeBlogs,
-  createBlog,
-  deleteBlog,
-} from './reducers/blogReducer';
+import { initializeBlogs, createBlog } from './reducers/blogReducer';
 import { setUser } from './reducers/userReducer';
 
 const App = () => {
@@ -118,18 +113,6 @@ const App = () => {
     }
   };
 
-  const handleDelete = async (blog) => {
-    if (window.confirm(`Delete ${blog.title}?`)) {
-      try {
-        dispatch(deleteBlog(blog.id));
-        dispatch(timedMessage(`Successfully deleted ${blog.title}`, 3));
-      } catch (error) {
-        console.log({ error });
-        dispatch(timedErrorMessage('Error deleting blog!', 3));
-      }
-    }
-  };
-
   const mainPage = () => (
     <div>
       <h2>Blogs</h2>
@@ -153,14 +136,7 @@ const App = () => {
       {blogs
         .sort((a, b) => b.likes - a.likes)
         .map((blog) => (
-          <Blog
-            key={blog.id}
-            blog={blog}
-            onDelete={() => {
-              handleDelete(blog);
-            }}
-            user={user}
-          />
+          <Blog key={blog.id} blog={blog} />
         ))}
     </div>
   );
@@ -192,6 +168,9 @@ const App = () => {
           <p>Logged in as {user.name}</p>
           <button onClick={handleLogout}>Logout</button>
           <Switch>
+            <Route path="/blogs/:id">
+              <BlogPage />
+            </Route>
             <Route path="/users/:id">
               <User />
             </Route>
