@@ -10,6 +10,7 @@ import Togglable from './components/Togglable';
 import Users from './components/Users';
 import User from './components/User';
 import BlogPage from './components/BlogPage';
+import NavMenu from './components/NavMenu';
 
 import blogService from './services/blogs';
 import loginService from './services/login';
@@ -80,12 +81,6 @@ const App = () => {
         dispatch(timedErrorMessage('Connection error', 3));
       }
     }
-  };
-
-  const handleLogout = () => {
-    dispatch(timedMessage(`Successfully logged out ${user.username}`, 3));
-    window.localStorage.removeItem('loggedInBlogListUser');
-    dispatch(setUser(null));
   };
 
   const handleCreateSubmit = async (event) => {
@@ -165,8 +160,7 @@ const App = () => {
         loginForm()
       ) : (
         <div>
-          <p>Logged in as {user.name}</p>
-          <button onClick={handleLogout}>Logout</button>
+          <NavMenu />
           <Switch>
             <Route path="/blogs/:id">
               <BlogPage />
