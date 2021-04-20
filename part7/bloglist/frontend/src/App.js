@@ -1,4 +1,4 @@
-///* eslint-disable */
+/* eslint-disable */
 
 import React, { useState, useEffect, useRef } from 'react';
 import Notification from './components/Notification';
@@ -12,10 +12,12 @@ import {
   timedMessage,
   timedErrorMessage,
 } from './reducers/notificationReducer';
-import { useDispatch } from 'react-redux';
+import { initializeBlogs, createBlog } from './reducers/blogReducer';
+import { useDispatch, useSelector } from 'react-redux';
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
+  const blogs = useSelector((state) => state.blogs);
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
@@ -27,7 +29,7 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
+    dispatch(initializeBlogs());
   }, []);
 
   useEffect(() => {
@@ -85,21 +87,20 @@ const App = () => {
 
     try {
       newBlogRef.current.toggleVisibility();
-      const response = await blogService.create({
-        title,
-        author,
-        url,
-      });
 
-      setBlogs([...blogs, response]);
+      dispatch(
+        createBlog({
+          title,
+          author,
+          url,
+        })
+      );
+
+      dispatch(timedMessage(`Successfully added ${title} to list!`, 3));
 
       setTitle('');
       setAuthor('');
       setUrl('');
-
-      dispatch(
-        timedMessage(`Successfully added ${response.title} to list!`, 3)
-      );
     } catch (error) {
       console.log({ error });
       dispatch(timedErrorMessage('Error adding blog to list!', 3));
