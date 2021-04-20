@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@craco/craco": "^6.1.1",
     "@testing-library/user-event": "^12.6.3",
     "axios": "^0.21.1",
     "react": "^17.0.1",
@@ -14,10 +15,9 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
     "eslint": "eslint .",
     "cypress:open": "cypress open",
     "test:e2e": "cypress run"

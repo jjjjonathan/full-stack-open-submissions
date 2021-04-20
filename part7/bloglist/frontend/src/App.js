@@ -10,6 +10,7 @@ import Login from './components/Login';
 import Create from './components/Create';
 import Togglable from './components/Togglable';
 import Users from './components/Users';
+import User from './components/User';
 
 import blogService from './services/blogs';
 import loginService from './services/login';
@@ -191,6 +192,9 @@ const App = () => {
           <p>Logged in as {user.name}</p>
           <button onClick={handleLogout}>Logout</button>
           <Switch>
+            <Route path="/users/:id">
+              <User />
+            </Route>
             <Route path="/users">
               <Users />
             </Route>
