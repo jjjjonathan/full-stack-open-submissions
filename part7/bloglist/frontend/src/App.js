@@ -1,3 +1,5 @@
+///* eslint-disable */
+
 import React, { useState, useEffect, useRef } from 'react';
 import Notification from './components/Notification';
 import Blog from './components/Blog';
@@ -6,10 +8,13 @@ import Create from './components/Create';
 import Togglable from './components/Togglable';
 import blogService from './services/blogs';
 import loginService from './services/login';
+import {
+  timedMessage,
+  timedErrorMessage,
+} from './reducers/notificationReducer';
+import { useDispatch } from 'react-redux';
 
 const App = () => {
-  const [message, setMessage] = useState('');
-  const [msgIsError, setMsgIsError] = useState(false);
   const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -19,6 +24,7 @@ const App = () => {
   const [url, setUrl] = useState('');
 
   const newBlogRef = useRef();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -34,22 +40,6 @@ const App = () => {
       blogService.setToken(newUser.token);
     }
   }, []);
-
-  const successMessage = (text) => {
-    setMsgIsError(false);
-    setMessage(text);
-    setTimeout(() => {
-      setMessage('');
-    }, 3000);
-  };
-
-  const errorMessage = (text) => {
-    setMsgIsError(true);
-    setMessage(text);
-    setTimeout(() => {
-      setMessage('');
-    }, 3000);
-  };
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -70,19 +60,22 @@ const App = () => {
       setUser(newUser);
       setUsername('');
       setPassword('');
-      successMessage(`Successfully logged in as ${newUser.username}`);
+
+      dispatch(
+        timedMessage(`Successfully logged in as ${newUser.username}`, 3)
+      );
     } catch (error) {
       console.log({ error });
       if (error.response.status === 401) {
-        errorMessage('Invalid username or password');
+        dispatch(timedErrorMessage('Invalid username or password'), 3);
       } else {
-        errorMessage('Connection error');
+        dispatch(timedErrorMessage('Connection error', 3));
       }
     }
   };
 
   const handleLogout = () => {
-    successMessage(`Successfully logged out ${user.username}`);
+    dispatch(timedMessage(`Successfully logged out ${user.username}`, 3));
     window.localStorage.removeItem('loggedInBlogListUser');
     setUser(null);
   };
@@ -103,10 +96,13 @@ const App = () => {
       setTitle('');
       setAuthor('');
       setUrl('');
-      successMessage(`Successfully added ${response.title} to list!`);
+
+      dispatch(
+        timedMessage(`Successfully added ${response.title} to list!`, 3)
+      );
     } catch (error) {
       console.log({ error });
-      errorMessage('Error adding blog to list!');
+      dispatch(timedErrorMessage('Error adding blog to list!', 3));
     }
   };
 
@@ -115,10 +111,10 @@ const App = () => {
       try {
         await blogService.deleteOne(blog.id);
         setBlogs(blogs.filter((controlBlog) => controlBlog.id !== blog.id));
-        successMessage(`Successfully deleted ${blog.title}`);
+        dispatch(timedMessage(`Successfully deleted ${blog.title}`, 3));
       } catch (error) {
         console.log({ error });
-        errorMessage('Error deleting blog!');
+        dispatch(timedErrorMessage('Error deleting blog!', 3));
       }
     }
   };
@@ -177,7 +173,7 @@ const App = () => {
 
   return (
     <div>
-      <Notification message={message} isError={msgIsError} />
+      <Notification />
       {user === null ? (
         loginForm()
       ) : (
