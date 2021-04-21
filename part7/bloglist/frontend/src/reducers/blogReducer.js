@@ -14,6 +14,15 @@ const reducer = (state = [], action) => {
       return state.map((blog) =>
         blog.id !== action.data.id ? blog : action.data
       );
+    case 'ADD_COMMENT':
+      return state.map((blog) =>
+        blog.id !== action.data.id
+          ? blog
+          : {
+              ...blog,
+              comments: [...blog.comments, action.data.comment],
+            }
+      );
     default:
       return state;
   }
@@ -55,6 +64,19 @@ export const updateBlog = (id, blog) => {
     dispatch({
       type: 'UPDATE_BLOG',
       data: updatedBlog,
+    });
+  };
+};
+
+export const addComment = (blogId, comment) => {
+  return async (dispatch) => {
+    await blogService.addComment(blogId, comment);
+    dispatch({
+      type: 'ADD_COMMENT',
+      data: {
+        id: blogId,
+        comment,
+      },
     });
   };
 };

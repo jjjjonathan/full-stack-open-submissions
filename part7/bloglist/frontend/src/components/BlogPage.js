@@ -1,11 +1,12 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
-import { updateBlog, deleteBlog } from '../reducers/blogReducer';
+import { updateBlog, deleteBlog, addComment } from '../reducers/blogReducer';
 import {
   timedMessage,
   timedErrorMessage,
 } from '../reducers/notificationReducer';
+import uniqid from 'uniqid';
 
 const BlogPage = () => {
   const id = useParams().id;
@@ -54,6 +55,14 @@ const BlogPage = () => {
     }
   };
 
+  const handleAddComment = (event) => {
+    event.preventDefault();
+    const comment = event.target.newcomment.value;
+    event.target.newcomment.value = '';
+    console.log('adding', comment);
+    dispatch(addComment(blog.id, comment));
+  };
+
   return blog ? (
     <div>
       <h2>{blog.title}</h2>
@@ -71,9 +80,13 @@ const BlogPage = () => {
         Added by {blog.user.name}
       </p>
       <h3>Comments</h3>
+      <form onSubmit={handleAddComment}>
+        <input name="newcomment" />
+        <button type="submit">add comment</button>
+      </form>
       <ul>
         {blog.comments.map((comment) => (
-          <li key={comment}>{comment}</li>
+          <li key={uniqid()}>{comment}</li>
         ))}
       </ul>
       {deleteButton()}
