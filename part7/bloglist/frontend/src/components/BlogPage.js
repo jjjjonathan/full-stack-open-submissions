@@ -70,6 +70,12 @@ const BlogPage = () => {
         <br />
         Added by {blog.user.name}
       </p>
+      <h3>Comments</h3>
+      <ul>
+        {blog.comments.map((comment) => (
+          <li key={comment}>{comment}</li>
+        ))}
+      </ul>
       {deleteButton()}
     </div>
   ) : null;
