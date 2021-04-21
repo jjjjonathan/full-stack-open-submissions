@@ -46,18 +46,10 @@ blogsRouter.post('/', async (request, response) => {
     user.blogs = [...user.blogs, savedBlog._id];
     await user.save();
 
-    const populatedBlog = {
-      title: savedBlog.title,
-      author: savedBlog.author,
-      url: savedBlog.url,
-      likes: savedBlog.likes,
-      id: savedBlog.id,
-      user: {
-        id: user._id.toString(),
-        name: user.name,
-        username: user.username,
-      },
-    };
+    const populatedBlog = await Blog.findById(savedBlog._id).populate('user', {
+      name: 1,
+      username: 1,
+    });
 
     response.status(201).json(populatedBlog);
   }
@@ -93,24 +85,28 @@ blogsRouter.put('/:id', async (request, response) => {
 
   const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, body, {
     new: true,
+  }).populate('user', {
+    name: 1,
+    username: 1,
   });
 
-  const user = await User.findById(updatedBlog.user);
+  response.json(updatedBlog);
+});
 
-  const populatedBlog = {
-    title: updatedBlog.title,
-    author: updatedBlog.author,
-    url: updatedBlog.url,
-    likes: updatedBlog.likes,
-    id: updatedBlog.id,
-    user: {
-      id: user._id.toString(),
-      name: user.name,
-      username: user.username,
-    },
-  };
+blogsRouter.post('/:id/comments', async (request, response) => {
+  const body = request.body;
+  const blog = await Blog.findById(request.params.id);
+  const comments = { comments: [...blog.comments, body.comment] };
 
-  response.json(populatedBlog);
+  const updatedBlog = await Blog.findByIdAndUpdate(
+    request.params.id,
+    comments,
+    {
+      new: true,
+    }
+  ).populate('user', { name: 1, username: 1 });
+
+  response.json(updatedBlog);
 });
 
 module.exports = blogsRouter;
