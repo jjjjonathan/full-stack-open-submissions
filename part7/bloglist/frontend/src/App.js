@@ -22,6 +22,8 @@ import {
 import { initializeBlogs, createBlog } from './reducers/blogReducer';
 import { setUser } from './reducers/userReducer';
 
+import { Table, Container } from 'react-bootstrap';
+
 const App = () => {
   const blogs = useSelector((state) => state.blogs);
   const user = useSelector((state) => state.user);
@@ -110,7 +112,7 @@ const App = () => {
 
   const mainPage = () => (
     <div>
-      <h2>Blogs</h2>
+      <h2 className="mt-4 mb-3 ml-2">Blogs</h2>
       <Togglable buttonLabel="Add new" ref={newBlogRef}>
         <Create
           onSubmit={handleCreateSubmit}
@@ -128,17 +130,21 @@ const App = () => {
           }}
         />
       </Togglable>
-      {blogs
-        .sort((a, b) => b.likes - a.likes)
-        .map((blog) => (
-          <Blog key={blog.id} blog={blog} />
-        ))}
+      <Table striped>
+        <tbody>
+          {blogs
+            .sort((a, b) => b.likes - a.likes)
+            .map((blog) => (
+              <Blog key={blog.id} blog={blog} />
+            ))}
+        </tbody>
+      </Table>
     </div>
   );
 
   const loginForm = () => (
     <div>
-      <h2>Login</h2>
+      <h2 className="mb-4">Login</h2>
       <Login
         onLogin={handleLogin}
         username={username}
@@ -154,13 +160,16 @@ const App = () => {
   );
 
   return (
-    <div>
-      <Notification />
+    <Container fluid className="mt-3">
       {user === null ? (
-        loginForm()
+        <div>
+          <Notification />
+          {loginForm()}
+        </div>
       ) : (
         <div>
           <NavMenu />
+          <Notification />
           <Switch>
             <Route path="/blogs/:id">
               <BlogPage />
@@ -175,7 +184,7 @@ const App = () => {
           </Switch>
         </div>
       )}
-    </div>
+    </Container>
   );
 };
 
